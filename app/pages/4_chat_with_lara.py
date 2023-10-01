@@ -1,10 +1,23 @@
 import os
 import pickle
 import streamlit as st
-
+import openai
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
 
+import sounddevice as sd
+from scipy.io.wavfile import write
+
+def transcribe_audio(audio_file_name="input_audio_whisper.wav"):
+    audio = open(audio_file_name, "rb")
+    transcript = openai.Audio.transcribe("whisper-1", audio)
+    return transcript
+
+
+def record_audio(fs=44100, seconds=5, audio_file_name="input_audio_whisper.wav"):
+    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
+    sd.wait()  # Wait until recording is finished
+    write(audio_file_name, fs, myrecording)  # Save as WAV file
 
 st.title("LARA's Notification Center")
 
@@ -57,7 +70,14 @@ def querry_llm(context, user_input):
 context = load_memory()
 
 st.subheader('Chat Interface')
-user_input = st.text_input("How can LARA assist you today?", "")
+sb = st.toggle('Speech Input')
+if sb == True:
+    audio_name = "input_audio_whisper.wav"
+    record_audio(audio_file_name=audio_name)
+    user_input = transcribe_audio(audio_name)["text"]
+    st.write(f'User said: {user_input}')
+else:
+    user_input = st.text_input("How can LARA assist you today?", "")
 if user_input:
     response = querry_llm(context, user_input)
     st.write(response.strip('"'))
