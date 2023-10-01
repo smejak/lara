@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 import pickle
+import time
 
 # Set the title of the app
 st.title('Daily Diary')
@@ -10,7 +11,10 @@ if 'daily_submitted' not in st.session_state:
     st.session_state.daily_submitted = False
 
 # Automatically fetch the current date and time
-current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+current_datetime = datetime.now().strftime('%Y-%m-%d')
+
+# Specify the file path where you want to save the pickle file
+daily_file_path = f'data/daily_outputs_{current_datetime}.pickle'
 
 if not st.session_state.daily_submitted:
     # Mood and Emotions
@@ -48,9 +52,6 @@ if not st.session_state.daily_submitted:
             'other_info': other_info
         }
 
-        # Specify the file path where you want to save the pickle file
-        daily_file_path = 'daily_outputs.pickle'
-
         # Open the file in binary mode and write the dictionary to the file
         with open(daily_file_path, 'wb') as file:
             pickle.dump(daily_outputs, file)
@@ -60,8 +61,23 @@ if not st.session_state.daily_submitted:
         st.session_state.daily_submitted = True
 
 else:
+    def loading_animation():
+        st.title("AI Assistant Lara - Loading...")
+        latest_iteration = st.empty()
+        bar = st.progress(0)
+
+        for i in range(100):
+            latest_iteration.text(f"Storing your diarry entry into AI Assistant Lara ... {i+1}%")
+            bar.progress(i + 1)
+            time.sleep(0.05)  # Simulate loading time
+
+        st.success("AI Assistant Lara has been generated!")
+        st.balloons()
+
+    # Display the loading animation
+    loading_animation()
     st.subheader('Thank you for providing today\'s diary entry!')
-    with open(f'daily_outputs_{current_datetime}.pickle', 'rb') as file:
+    with open(daily_file_path, 'rb') as file:
         daily_outputs = pickle.load(file)
     for k, v in daily_outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
