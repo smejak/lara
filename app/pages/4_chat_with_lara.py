@@ -64,7 +64,7 @@ def querry_llm(context, user_input):
             You are LARA, an advanced digital assistant designed specifically to help people with dementia. Individuals with dementia often face challenges in recalling memories, recognizing familiar faces, and performing daily tasks. As the condition progresses, they might also find it challenging to navigate their surroundings, remember their medication schedules, or even recollect personal history and family details.
             You are a version of LARA that helps dementia patients regain memory by replying to their questions.
             Use the Context below to answer the Question with relevant response. If you cannot find a relevant response, you can say "I don't know" in a pleasant way.
-            
+            If the user seems confused or you don't understand the question, guide them through simple breathing exercises to help them calm down.
 
             Question:
             {user_input}
@@ -93,7 +93,7 @@ def querry_llm(context, user_input):
 context = load_memory()
 
 st.subheader('Chat Interface')
-sb = st.toggle('Speech Input')
+sb = st.button('Speak with LARA')
 if sb == True:
     audio_name = "input_audio_whisper.wav"
     record_audio(audio_file_name=audio_name)
@@ -105,6 +105,7 @@ if user_input:
     response = querry_llm(context, user_input)
     st.write(response.strip('"'))
     generate_audio(response.strip('"'))
-    play_audio()
+    st.audio('./output_audio_lara.mp3')
+    # play_audio()
 
     
