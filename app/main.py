@@ -18,12 +18,6 @@ This is a proof-of-concept application to demonstrate its potential features and
 ''')
 
 
-# Placeholder for chat interface
-st.subheader('Chat Interface')
-user_input = st.text_input("How can LARA assist you today?", "")
-if user_input:
-    st.write(f"LARA responds: ...")  # This will be replaced by actual chatbot logic
-
 # Placeholder items to demonstrate other features of LARA
 st.subheader('Potential Features of LARA')
 st.write('''
