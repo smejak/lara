@@ -47,12 +47,12 @@ def display_daily_form():
     # Submit Button
     if st.button('Submit Diary Entry'):
         daily_outputs = {
-            'current_datetime': current_datetime,
-            'selected_mood': selected_mood,
-            'activities': activities,
-            'highlight': highlight,
-            'interactions': interactions,
-            'other_info': other_info
+            'Record Datetime': current_datetime,
+            'Day Mood': selected_mood,
+            'Day Activities': activities,
+            'Day Highlight': highlight,
+            'Day Interactions': interactions,
+            'Day - other_info': other_info
         }
 
         save_daily_outputs(daily_outputs)
