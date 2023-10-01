@@ -48,14 +48,17 @@ def display_input_row(index):
 
 # display_input_row(0)
 
+if 'rows' not in st.session_state:
+    st.session_state['rows'] = 0
+
 def increase_rows():
     st.session_state['rows'] += 1
 
-st.button('Add person', on_click=increase_rows)
 
 for i in range(st.session_state['rows']):
     display_input_row(i)
 
+st.button('Add person', on_click=increase_rows)
 # Health Information
 st.subheader('Health Information')
 medication_info = st.text_area('Medication Details', 'List down the medications and their dosing.')
