@@ -75,7 +75,7 @@ if sb == True:
     audio_name = "input_audio_whisper.wav"
     record_audio(audio_file_name=audio_name)
     user_input = transcribe_audio(audio_name)["text"]
-    st.write(f'User said: {user_input}')
+    st.write(f'U: {user_input}')
 else:
     user_input = st.text_input("How can LARA assist you today?", "")
 if user_input:
