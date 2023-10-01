@@ -92,17 +92,22 @@ def querry_llm(context, user_input):
 ####### RUNNING FROM HERE
 context = load_memory()
 
+if 'context' not in st.session_state:
+    st.session_state.context = context
+
 st.subheader('Chat Interface')
 sb = st.button('Speak with LARA')
 if sb == True:
     audio_name = "input_audio_whisper.wav"
     record_audio(audio_file_name=audio_name)
     user_input = transcribe_audio(audio_name)["text"]
+    st.session_state.context += user_input
     st.write(f'U: {user_input}')
 else:
     user_input = st.text_input("How can LARA assist you today?", "")
 if user_input:
     response = querry_llm(context, user_input)
+    st.session_state.context += response
     st.write(response.strip('"'))
     generate_audio(response.strip('"'))
     st.audio('./output_audio_lara.mp3')
