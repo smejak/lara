@@ -29,7 +29,9 @@ prompt_ = """
         Context:
         {context}
 
-        Reminder:
+        ###
+        
+        Output the Reminder:
 
         """
 template = PromptTemplate(template=prompt_, input_variables=["context"])
