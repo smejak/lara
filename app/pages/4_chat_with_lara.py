@@ -12,6 +12,7 @@ from gtts import gTTS
 # This module is imported so that we can 
 # play the converted audio
 import os
+from datetime import datetime
 
 
 def generate_audio(text, language='en', audio_file_name='output_audio_lara.mp3'):
@@ -42,7 +43,7 @@ def record_audio(fs=44100, seconds=5, audio_file_name="input_audio_whisper.wav")
     sd.wait()  # Wait until recording is finished
     write(audio_file_name, fs, myrecording)  # Save as WAV file
 
-st.title("LARA's Notification Center")
+st.title("Chat with LARA")
 
 
 def load_memory():
@@ -56,6 +57,7 @@ def load_memory():
             data = pickle.load(f)
             context += str(data)
 
+    context += f'/n {datetime.now()}'
     print(context)
     return context
 
@@ -95,7 +97,6 @@ context = load_memory()
 if 'context' not in st.session_state:
     st.session_state.context = context
 
-st.subheader('Chat Interface')
 sb = st.button('Speak with LARA')
 if sb == True:
     audio_name = "input_audio_whisper.wav"

@@ -5,9 +5,40 @@ from datetime import datetime
 
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
+import os
+import pickle
+import streamlit as st
+import openai
+from langchain.llms import OpenAI
+from langchain import PromptTemplate
+
+import sounddevice as sd
+from scipy.io.wavfile import write
+
+from gtts import gTTS
+# This module is imported so that we can 
+# play the converted audio
+import os
+from datetime import datetime
+
+def generate_audio(text, language='en', audio_file_name='output_audio_lara.mp3'):
+    # Passing the text and language to the engine,
+    # here we have marked slow=False. Which tells
+    # the module that the converted audio should
+    # have a high speed
+    myobj = gTTS(text=text, lang=language, slow=False)
+
+    # Saving the converted audio in a mp3 file named
+    # welcome
+    myobj.save(audio_file_name)
 
 
-st.title("LARA's Notification Center")
+def play_audio(audio_file_name='output_audio_lara.mp3'):
+    # Playing the converted file
+    os.system('mpg321 ' + audio_file_name)
+
+
+st.title("Reminders")
 
 
 data_folder = 'data/'
@@ -46,3 +77,5 @@ if st.button("Get Reminder"):
     res = llm(prompt)
 
     st.write(res.strip('"'))
+    generate_audio(res.strip('"'))
+    st.audio('./output_audio_lara.mp3')
