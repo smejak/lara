@@ -19,14 +19,14 @@ if not st.session_state.submitted:
     # Address
     address = st.text_input('Address')
     apartment_info = st.text_area('Apartment Details', 
-                                'Describe the apartment, how the building looks, where the entrance is located, how to get to the entrance, and how to navigate from the entrance to the apartment.')
+                                placeholder='Describe the apartment, how the building looks, where the entrance is located, how to get to the entrance, and how to navigate from the entrance to the apartment.')
 
     # Date of Birth and Place of Birth
     dob = st.date_input('Date of Birth')
     pob = st.text_input('Place of Birth')
 
     # Personal History
-    history = st.text_area('Personal History', 'Please provide a brief personal history.')
+    history = st.text_area('Personal History', placeholder='Please provide a brief personal history.')
     cv_upload = st.file_uploader("Or, upload a PDF with supplementary information", type=["pdf", "docx"])
 
     # Family/Close People Information
@@ -69,19 +69,19 @@ if not st.session_state.submitted:
     st.button('Add person', on_click=increase_rows)
     # Health Information
     st.subheader('Health Information')
-    medication_info = st.text_area('Medication Details', 'List down the medications and their dosing.')
-    medical_conditions = st.text_area('Medical Conditions', 'Describe the conditions and their implications for life, e.g., allergies.')
+    medication_info = st.text_area('Medication Details', placeholder='List down the medications and their dosing.')
+    medical_conditions = st.text_area('Medical Conditions', placeholder='Describe the conditions and their implications for life, e.g., allergies.')
 
     # Areas of Assistance
     areas_of_assistance = st.multiselect('Select Needed Areas of Assistance', 
                                         ['Groceries', 'Doctors', 'Relatives', 'Appointments', 'Navigation', 'Introduction'])
 
     # Memory Triggers
-    memory_triggers = st.text_area('Memory Triggers', 'List down triggers or cues that help in recalling memories.')
+    memory_triggers = st.text_area('Memory Triggers', placeholder='List down triggers or cues that help in recalling memories.')
 
     # Emergency Contacts and Procedures
-    emergency_contacts = st.text_area('Emergency Contacts', 'List down names and phone numbers of emergency contacts.')
-    emergency_procedures = st.text_area('Emergency Procedures', 'Describe any specific procedures to follow in emergencies.')
+    emergency_contacts = st.text_area('Emergency Contacts', placeholder='List down names and phone numbers of emergency contacts.')
+    emergency_procedures = st.text_area('Emergency Procedures', placeholder='Describe any specific procedures to follow in emergencies.')
 
     # Other Information
     st.subheader('Other Information')
