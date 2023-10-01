@@ -112,7 +112,7 @@ if not st.session_state.submitted:
         }
 
         # Specify the file path where you want to save the pickle file
-        file_path = 'outputs.pickle'
+        file_path = 'data/outputs.pickle'
 
         # Open the file in binary mode and write the dictionary to the file
         with open(file_path, 'wb') as file:
@@ -124,7 +124,7 @@ if not st.session_state.submitted:
         st.session_state.submitted = True
 else:
     st.subheader('Thank you for providing the information!')
-    with open('outputs.pickle', 'rb') as file:
+    with open('data/outputs.pickle', 'rb') as file:
         outputs = pickle.load(file)
     for k, v in outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
