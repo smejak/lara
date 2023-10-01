@@ -1,5 +1,6 @@
 import streamlit as st
 import pickle
+import time
 
 
 # Set the title of the app
@@ -123,6 +124,22 @@ if not st.session_state.submitted:
         submitted = True
         st.session_state.submitted = True
 else:
+    def loading_animation():
+        st.title("AI Assistant Lara - Loading...")
+        latest_iteration = st.empty()
+        bar = st.progress(0)
+
+        for i in range(100):
+            latest_iteration.text(f"Generating AI Assistant Lara... {i+1}%")
+            bar.progress(i + 1)
+            time.sleep(0.05)  # Simulate loading time
+
+        st.success("AI Assistant Lara has been generated!")
+        st.balloons()
+
+    # Display the loading animation
+    loading_animation()
+
     st.subheader('Thank you for providing the information!')
     with open('data/outputs.pickle', 'rb') as file:
         outputs = pickle.load(file)
