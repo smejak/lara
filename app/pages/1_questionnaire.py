@@ -56,22 +56,22 @@ def display_onboarding_form():
     # Submit Button
     if st.button('Submit Onboarding Information'):
         outputs = {
-            'name': name,
-            'address': address,
-            'apartment_info': apartment_info,
-            'dob': dob,
-            'pob': pob,
-            'history': history,
+            'Name': name,
+            'Current Address': address,
+            'Apartment Info': apartment_info,
+            'Data of Birth': dob,
+            'Place of Birth': pob,
+            'Key Personal History Information': history,
             'cv_upload': cv_upload,
-            'family_members': family_members,
-            'medication_info': medication_info,
-            'medical_conditions': medical_conditions,
-            'areas_of_assistance': areas_of_assistance,
-            'memory_triggers': memory_triggers,
-            'emergency_contacts': emergency_contacts,
-            'emergency_procedures': emergency_procedures,
-            'legal_docs_location': legal_docs_location,
-            'dietary_preferences': dietary_preferences
+            'Family Members Information': family_members,
+            'Medication Information': medication_info,
+            'Medical Conditions': medical_conditions,
+            'Key Areas of Assistance': areas_of_assistance,
+            'Memmory Restore Triggers': memory_triggers,
+            'Emergency Contacts': emergency_contacts,
+            'Emergency Procedures': emergency_procedures,
+            'Legal Documents Location': legal_docs_location,
+            'Dietary Preferences': dietary_preferences
         }
         save_onboarding_outputs(outputs)
         st.session_state.submitted = True
