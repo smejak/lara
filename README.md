@@ -1,4 +1,4 @@
-# life--upgrade
+# LARA: Life Aid & Recovery Assistant
 
 This project aims to develop an application called LARA (Life Aid Recovery Assistant) to assist individuals with dementia in navigating their daily lives. The application provides various features and functionalities to support users in such situations.
 
