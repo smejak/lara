@@ -26,42 +26,35 @@ cv_upload = st.file_uploader("Or, upload your CV for faster onboarding", type=["
 st.subheader('Family Members')
 family_members = []
 
-
-fm_name = st.text_input('Family Member name')
-
-if 'clicked' not in st.session_state:
-    st.session_state.clicked = False
-
-def click_button():
-    st.session_state.clicked = True
-    st.session_state.family_members 
-
-st.button('Click me', on_click=click_button)
-
-if st.session_state.clicked:
-    # The message and nested widget will remain on the page
-    st.write('Button clicked!')
-    st.slider('Select a value')
-
-
-if st.button('Add Family Member'):
-    family_members.append({})
-    st.subheader(f'Family Member {fm_name}')
-    fm_info = st.text_area(f'Detailed Information about {fm_name} {fm_name}')
-    fm_status = st.radio(f'Is {fm_name} Alive? {fm_name}', ['Alive', 'Deceased'])
+def display_input_row(index):
+    fm_name = st.text_input('Family Member Name', key=f'name_{index}')
+    fm_rel = st.radio(f'What is your relationship to {fm_name}?', ['Mother', 'Father', 'Sister', 'Brother', 'Cousin', 'Son', 'Daughter', 'Grandson', 'Grand daughter', 'Niece', 'Nephew', 'Aunt', 'Uncle', 'Other'], key=f'rel_{index}')
+    if fm_rel == 'Other':
+        fm_rel = st.text_input('Relationship status', key=f'rel2_{index}')
+    fm_info = st.text_area(f'Detailed Information about {fm_name}.', key=f'info_{index}')
+    fm_status = st.radio(f'Is {fm_name} Alive?', ['Alive', 'Deceased'], key=f'status_{index}')
     if fm_status == 'Deceased':
-        st.date_input(f'Date of Passing for {fm_name} {fm_name}')
+        fm_d_date = st.date_input(f'Date of Passing for {fm_name}', key=f'date_{index}')
+    if 'rows' not in st.session_state:
+        st.session_state['rows'] = 0
 
-# st.button('Add Family Member', add_fm)
+    family_member = {
+        'name': fm_name,
+        'relationship': fm_rel,
+        'detailed_information': fm_info,
+        'alive_status': fm_status
+    }
+    return family_member
 
+# display_input_row(0)
 
-# for idx, _ in enumerate(family_members):
-#     st.subheader(f'Family Member {idx+1}')
-#     fm_name = st.text_input(f'Name {idx+1}')
-#     fm_info = st.text_area(f'Detailed Information about {fm_name} {idx+1}')
-#     fm_status = st.radio(f'Is {fm_name} Alive? {idx+1}', ['Alive', 'Deceased'])
-#     if fm_status == 'Deceased':
-#         st.date_input(f'Date of Passing for {fm_name} {idx+1}')
+def increase_rows():
+    st.session_state['rows'] += 1
+
+st.button('Add person', on_click=increase_rows)
+
+for i in range(st.session_state['rows']):
+    display_input_row(i)
 
 # Health Information
 st.subheader('Health Information')
@@ -88,3 +81,16 @@ dietary_preferences = st.text_area('Dietary Preferences / Restrictions')
 if st.button('Submit Onboarding Information'):
     st.write('Thank you for providing the information. We will process and store it securely.')
 
+
+
+
+
+# Show the results
+st.subheader('People')
+for i in range(st.session_state['rows']):
+    st.write(
+        f'Person {i+1}:',
+        st.session_state[f'first_{i}'],
+        st.session_state[f'middle_{i}'],
+        st.session_state[f'last_{i}']
+    )
