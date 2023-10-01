@@ -16,7 +16,11 @@ current_datetime = datetime.now().strftime('%Y-%m-%d')
 # Specify the file path where you want to save the pickle file
 daily_file_path = f'data/daily_outputs_{current_datetime}.pickle'
 
-if not st.session_state.daily_submitted:
+def save_daily_outputs(daily_outputs):
+    with open(daily_file_path, 'wb') as file:
+        pickle.dump(daily_outputs, file)
+
+def display_daily_form():
     # Mood and Emotions
     st.subheader('Mood and Emotions')
     st.write("Select your mood using emojis:")
@@ -42,7 +46,6 @@ if not st.session_state.daily_submitted:
 
     # Submit Button
     if st.button('Submit Diary Entry'):
-        # Create a dictionary to store the daily diary outputs
         daily_outputs = {
             'current_datetime': current_datetime,
             'selected_mood': selected_mood,
@@ -52,32 +55,34 @@ if not st.session_state.daily_submitted:
             'other_info': other_info
         }
 
-        # Open the file in binary mode and write the dictionary to the file
-        with open(daily_file_path, 'wb') as file:
-            pickle.dump(daily_outputs, file)
-
-        # Close the file
-        file.close()
+        save_daily_outputs(daily_outputs)
         st.session_state.daily_submitted = True
+        loading_animation()
 
-else:
-    def loading_animation():
-        st.title("AI Assistant Lara - Loading...")
-        latest_iteration = st.empty()
-        bar = st.progress(0)
+def loading_animation():
+    st.title("AI Assistant Lara - Loading...")
+    latest_iteration = st.empty()
+    bar = st.progress(0)
 
-        for i in range(100):
-            latest_iteration.text(f"Storing your diarry entry into AI Assistant Lara ... {i+1}%")
-            bar.progress(i + 1)
-            time.sleep(0.05)  # Simulate loading time
+    for i in range(100):
+        latest_iteration.text(f"Storing your diary entry into AI Assistant Lara ... {i+1}%")
+        bar.progress(i + 1)
+        time.sleep(0.05)  # Simulate loading time
 
-        st.success("AI Assistant Lara has been generated!")
-        st.balloons()
+    st.success("AI Assistant Lara has been generated!")
+    st.balloons()
 
-    # Display the loading animation
-    loading_animation()
     st.subheader('Thank you for providing today\'s diary entry!')
     with open(daily_file_path, 'rb') as file:
         daily_outputs = pickle.load(file)
     for k, v in daily_outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
+
+if st.session_state.daily_submitted:
+    st.subheader('Thank you for providing today\'s diary entry!')
+    with open(daily_file_path, 'rb') as file:
+        daily_outputs = pickle.load(file)
+    for k, v in daily_outputs.items():
+        st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
+else:
+    display_daily_form()
