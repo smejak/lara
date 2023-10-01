@@ -75,7 +75,6 @@ def display_onboarding_form():
         }
         save_onboarding_outputs(outputs)
         st.session_state.submitted = True
-        loading_animation()
 
 def loading_animation():
     st.title("AI Assistant Lara - Loading...")
@@ -94,12 +93,27 @@ def loading_animation():
         outputs = pickle.load(file)
     for k, v in outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
+        
+def retrieval_animation():
+    st.title("AI Assistant Lara - Loading...")
+    latest_iteration = st.empty()
+    bar = st.progress(0)
+    for i in range(100):
+        latest_iteration.text(f"Retrieving onboarding information... {i+1}%")
+        bar.progress(i + 1)
+        time.sleep(0.05)  # Simulate loading time
 
-if st.session_state.submitted:
+    st.success("AI Assistant Lara has been generated!")
+    st.balloons()
+
     st.subheader('Thank you for providing the onboarding information!')
     with open(file_path, 'rb') as file:
         outputs = pickle.load(file)
     for k, v in outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
+
+if st.session_state.submitted:
+    retrieval_animation()
+
 else:
     display_onboarding_form()
