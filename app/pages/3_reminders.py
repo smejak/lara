@@ -1,6 +1,7 @@
 import os
 import pickle
 import streamlit as st
+from datetime import datetime
 
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
@@ -28,19 +29,20 @@ prompt_ = """
 
         Context:
         {context}
+        {time}
 
         ###
         
         Output the Reminder:
 
         """
-template = PromptTemplate(template=prompt_, input_variables=["context"])
+template = PromptTemplate(template=prompt_, input_variables=["context", "time"])
 
 
 
 if st.button("Get Reminder"):
     llm = OpenAI(model_name="gpt-4", temperature=0.5, max_tokens=300)
-    prompt = template.format(context=context)
+    prompt = template.format(context=context, time=datetime.now())
     res = llm(prompt)
 
     st.write(res.strip('"'))
