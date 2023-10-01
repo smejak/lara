@@ -16,6 +16,28 @@ def save_onboarding_outputs(outputs):
     with open(file_path, 'wb') as file:
         pickle.dump(outputs, file)
 
+
+def display_input_row(index):
+    fm_name = st.text_input('Family Member Name', key=f'name_{index}')
+    fm_rel = st.radio(f'What is your relationship to {fm_name}?', ['Mother', 'Father', 'Sister', 'Brother', 'Cousin', 'Son', 'Daughter', 'Grandson', 'Grand daughter', 'Niece', 'Nephew', 'Aunt', 'Uncle', 'Friend', 'Other'], key=f'rel_{index}')
+    if fm_rel == 'Other':
+        fm_rel = st.text_input('Relationship status', key=f'rel2_{index}')
+    fm_info = st.text_area(f'Detailed Information about {fm_name}.', key=f'info_{index}')
+    fm_status = st.radio(f'Is {fm_name} Alive?', ['Alive', 'Deceased'], key=f'status_{index}')
+    if fm_status == 'Deceased':
+        fm_d_date = st.date_input(f'Date of Passing for {fm_name}', key=f'date_{index}')
+    if 'rows' not in st.session_state:
+        st.session_state['rows'] = 0
+
+    family_member = {
+        'name': fm_name,
+        'relationship': fm_rel,
+        'detailed_information': fm_info,
+        'alive_status': fm_status
+    }
+    return family_member
+
+
 def display_onboarding_form():
     # Name
     name = st.text_input('Name')
@@ -33,7 +55,21 @@ def display_onboarding_form():
     cv_upload = st.file_uploader("Or, upload a PDF with supplementary information", type=["pdf", "docx"])
 
     # Family/Close People Information
-    family_members = st.text_area('Family Members', placeholder='List names and relationships.')
+    st.subheader('Family Members and Friends')
+    family_members = []
+    
+    if 'rows' not in st.session_state:
+        st.session_state['rows'] = 0
+
+    def increase_rows():
+        st.session_state['rows'] += 1
+
+    for i in range(st.session_state['rows']):
+        fm = display_input_row(i)
+        family_members.append(fm)
+
+    st.button('Add person', on_click=increase_rows)
+    
 
     # Health Information
     medication_info = st.text_area('Medication Details', placeholder='List down the medications and their dosing.')
