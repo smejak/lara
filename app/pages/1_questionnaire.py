@@ -15,6 +15,9 @@ file_path = 'data/onboarding_outputs.pickle'
 def save_onboarding_outputs(outputs):
     with open(file_path, 'wb') as file:
         pickle.dump(outputs, file)
+    with open('data/onboarding_outputs.txt', 'w') as file:
+        for k, v in outputs.items():
+            file.write(f"{k.capitalize().replace('_', ' ')}: {v}\n")
 
 
 def display_input_row(index):
