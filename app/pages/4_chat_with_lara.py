@@ -4,6 +4,9 @@ import streamlit as st
 import openai
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
+from llama_hub.file.pymu_pdf.base import PyMuPDFReader
+from llama_index import VectorStoreIndex, ServiceContext, LLMPredictor
+from llama_index import download_loader
 
 import sounddevice as sd
 from scipy.io.wavfile import write
@@ -56,9 +59,35 @@ def load_memory():
         with open(os.path.join(data_folder, file), 'rb') as f:
             data = pickle.load(f)
             context += str(data)
+            
+    pdf_folder = 'datapdf/'
+    pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith('.pdf')]
+
+    for file in pdf_files:
+        reader = PyMuPDFReader()
+        PDFReader = download_loader("PDFReader")
+        loader = PDFReader()
+        documents = loader.load_data(file=os.path.join(pdf_folder, file))
+        context += documents[0].text
 
     context += f'/n {datetime.now()}'
+
     print(context)
+    return context
+
+def load_pdf():
+    data_folder = 'datapdf/'
+    pdf_files = [f for f in os.listdir(data_folder) if f.endswith('.pdf')]
+
+    context = ''
+
+    for file in pdf_files:
+        reader = PyMuPDFReader()
+        PDFReader = download_loader("PDFReader")
+        loader = PDFReader()
+        documents = loader.load_data(file=os.path.join(data_folder, file))
+
+    context = documents[0].text
     return context
 
 def querry_llm(context, user_input):
