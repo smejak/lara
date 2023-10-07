@@ -68,11 +68,12 @@ def load_memory():
         PDFReader = download_loader("PDFReader")
         loader = PDFReader()
         documents = loader.load_data(file=os.path.join(pdf_folder, file))
+        index = VectorStoreIndex.from_documents(documents)
+        index.storage_context.persist()
         context += documents[0].text
 
     context += f'/n {datetime.now()}'
 
-    print(context)
     return context
 
 def load_pdf():
@@ -99,7 +100,7 @@ def querry_llm(context, user_input):
 
             Question:
             {user_input}
-            
+
             Context:
             {context}
 
@@ -118,7 +119,6 @@ def querry_llm(context, user_input):
     res = llm(prompt)
 
     return res
-    
 
 ####### RUNNING FROM HERE
 context = load_memory()
