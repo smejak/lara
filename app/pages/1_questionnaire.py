@@ -1,6 +1,10 @@
 import streamlit as st
+import requests
 import pickle
 import time
+
+from llama_hub.file.pymu_pdf.base import PyMuPDFReader
+
 
 # Set the title of the app
 st.title('Onboarding Questionnaire')
@@ -56,6 +60,10 @@ def display_onboarding_form():
     # Personal History
     history = st.text_area('Personal History', placeholder='Please provide a brief personal history.')
     cv_upload = st.file_uploader("Or, upload a PDF with supplementary information", type=["pdf", "docx"])
+    if cv_upload is not None:
+        with open(f'datapdf/{cv_upload.name}', "wb") as file:
+            file.write(cv_upload.getvalue())
+
 
     # Family/Close People Information
     st.subheader('Family Members and Friends')
