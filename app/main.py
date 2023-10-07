@@ -13,13 +13,13 @@ st.title('LARA: Life Aid Recovery Assistant')
 
 # Introduction text
 st.write('''
-LARA is designed to assist individuals with dementia to help them get back home when they're lost. 
+LARA is designed to assist individuals with dementia with daily tasks and emergencies. 
 This is a proof-of-concept application to demonstrate its potential features and functionalities.
 ''')
 
 
 # Placeholder items to demonstrate other features of LARA
-st.subheader('Potential Features of LARA')
+st.subheader('Future Features of LARA')
 st.write('''
 - **Real-time Geolocation**: Track the user's current location and provide directions to get back home.
 - **Emergency Contact**: Automatically notify emergency contacts if the user seems lost for an extended period.
