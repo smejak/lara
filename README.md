@@ -9,8 +9,9 @@ This project aims to develop an application called LARA (Life Aid Recovery Assis
 
 ## User Guide
 
-To run, first add your OpenAI API key to your environment and install the requirements. Then run:
+To run, first add your OpenAI API key to your environment. Then run:
 ```
+pip install -r requiremets.txt
 streamlit run app/main.py
 ```
 
