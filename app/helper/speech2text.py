@@ -3,16 +3,9 @@ import openai
 import sounddevice as sd
 from scipy.io.wavfile import write
 
-os.environ["OPENAI_API_KEY"] = "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"
-
-
-def _connect_openai():
-    openai.organization = "org-KEIYdBllWDa3B2KHSxi26GQw"
-    openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def transcribe_audio(audio_file_name="input_audio_whisper.wav"):
-    _connect_openai()
     audio = open(audio_file_name, "rb")
     transcript = openai.Audio.transcribe("whisper-1", audio)
     return transcript
