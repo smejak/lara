@@ -71,8 +71,9 @@ def display_question(question, key):
     """Shows the next questions"""
     response = st.text_area(question)
     button_key = f"next_button_{st.session_state.current_question}"
+    classified_res = eval_res(question, response)
     if st.button('Next', key=button_key):
-        if response:
+        if response and (classified_res=="OK"):
             st.session_state.responses[key] = response
             st.session_state.current_question += 1
         else:
