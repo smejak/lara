@@ -2,27 +2,61 @@ import streamlit as st
 import requests
 import pickle
 import time
+import json
 
 from llama_hub.file.pymu_pdf.base import PyMuPDFReader
 
 
-# Set the title of the app
-st.title('Onboarding Questionnaire')
+### SUPPORTING CODE ###
+def loading_animation():
+    st.title("AI Assistant Lara - Loading...")
+    latest_iteration = st.empty()
+    bar = st.progress(0)
+    for i in range(100):
+        latest_iteration.text(f"Processing onboarding information... {i+1}%")
+        bar.progress(i + 1)
+        time.sleep(0.05)  # Simulate loading time
 
-# Check for the submission state
-if 'submitted' not in st.session_state:
-    st.session_state.submitted = False
+    st.success("AI Assistant Lara has been generated!")
+    st.balloons()
 
-# Specify the file path to save the pickle file
-file_path = 'data/onboarding_outputs.pickle'
+    st.subheader('Thank you for providing the onboarding information!')
+    with open(file_path, 'rb') as file:
+        outputs = pickle.load(file)
+    for k, v in outputs.items():
+        st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
 
-def save_onboarding_outputs(outputs):
+def retrieval_animation():
+    st.title("AI Assistant Lara - Loading...")
+    latest_iteration = st.empty()
+    bar = st.progress(0)
+    for i in range(100):
+        latest_iteration.text(f"Retrieving onboarding information... {i+1}%")
+        bar.progress(i + 1)
+        time.sleep(0.05)  # Simulate loading time
+
+    st.success("AI Assistant Lara has been generated!")
+    st.balloons()
+
+    st.subheader('Thank you for providing the onboarding information!')
+    with open(file_path, 'rb') as file:
+        outputs = pickle.load(file)
+    for k, v in outputs.items():
+        st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
+
+
+def save_onboarding_outputs(outputs, medicine):
+    """Write the onboarding info into the file path"""
     with open(file_path, 'wb') as file:
         pickle.dump(outputs, file)
     with open('data/onboarding_outputs.txt', 'w') as file:
         for k, v in outputs.items():
             file.write(f"{k.capitalize().replace('_', ' ')}: {v}\n")
-
+    
+    ## Save medicine info into a separate structured file for deterministic retrieval## 
+    with open('data/medicine_info.json', 'w') as file:
+        json.dump(medicine, file)
+        
 
 def display_input_row(index):
     fm_name = st.text_input('Family Member Name', key=f'name_{index}')
@@ -43,6 +77,26 @@ def display_input_row(index):
         'alive_status': fm_status
     }
     return family_member
+
+
+def display_medication_row(index):
+    """
+    Function to display medication input row.
+    """
+    if index != 0:  # To avoid placing a separator before the first entry
+        st.markdown("---")
+        
+    med_name = st.text_input('Medicication Name', key=f'med_name_{index}')
+    med_time = st.time_input('Time to take medicine', key=f'med_time_{index}')
+    med_dosing = st.number_input('Dosing - Tablets', min_value=1, max_value=20, key=f'med_dosing_{index}')
+    med_notes = st.text_input('Additional Notes', key=f'med_notes_{index}')
+    
+    return {
+        'medication_name': med_name,
+        'medicaction_time': med_time,
+        'dosing_tablets': med_dosing,
+        'additional_notes': med_notes,
+    }
 
 
 def display_onboarding_form():
@@ -83,7 +137,25 @@ def display_onboarding_form():
     
 
     # Health Information
-    medication_info = st.text_area('Medication Details', placeholder='List down the medications and their dosing.')
+    st.subheader('Medication Details')
+    medications_info = []
+    
+    if 'med_rows' not in st.session_state:
+        st.session_state['med_rows'] = 0
+
+    for i in range(st.session_state['med_rows']):
+        med = display_medication_row(i)
+        medications_info.append(med)
+
+    add_med_button = st.button('Add Medicine Entry')
+    remove_med_button = st.button('Remove Medicine Entry')
+
+    if add_med_button:
+        st.session_state['med_rows'] += 1
+
+    if remove_med_button and st.session_state['med_rows'] > 0:
+        st.session_state['med_rows'] -= 1
+
     medical_conditions = st.text_area('Medical Conditions', placeholder='Describe the conditions and their implications.')
 
     # Areas of Assistance
@@ -111,7 +183,7 @@ def display_onboarding_form():
             'Key Personal History Information': history,
             'cv_upload': cv_upload,
             'Family Members Information': family_members,
-            'Medication Information': medication_info,
+            'Medication Information': medications_info,
             'Medical Conditions': medical_conditions,
             'Key Areas of Assistance': areas_of_assistance,
             'Memmory Restore Triggers': memory_triggers,
@@ -123,41 +195,18 @@ def display_onboarding_form():
         save_onboarding_outputs(outputs)
         st.session_state.submitted = True
 
-def loading_animation():
-    st.title("AI Assistant Lara - Loading...")
-    latest_iteration = st.empty()
-    bar = st.progress(0)
-    for i in range(100):
-        latest_iteration.text(f"Processing onboarding information... {i+1}%")
-        bar.progress(i + 1)
-        time.sleep(0.05)  # Simulate loading time
 
-    st.success("AI Assistant Lara has been generated!")
-    st.balloons()
+### MAIN PROGRAM ###
+# Set the title of the app
+st.title('Onboarding Questionnaire')
 
-    st.subheader('Thank you for providing the onboarding information!')
-    with open(file_path, 'rb') as file:
-        outputs = pickle.load(file)
-    for k, v in outputs.items():
-        st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
-        
-def retrieval_animation():
-    st.title("AI Assistant Lara - Loading...")
-    latest_iteration = st.empty()
-    bar = st.progress(0)
-    for i in range(100):
-        latest_iteration.text(f"Retrieving onboarding information... {i+1}%")
-        bar.progress(i + 1)
-        time.sleep(0.05)  # Simulate loading time
+# Check for the submission state
+if 'submitted' not in st.session_state:
+    st.session_state.submitted = False
 
-    st.success("AI Assistant Lara has been generated!")
-    st.balloons()
-
-    st.subheader('Thank you for providing the onboarding information!')
-    with open(file_path, 'rb') as file:
-        outputs = pickle.load(file)
-    for k, v in outputs.items():
-        st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
+# Specify the file path to save the pickle file
+# TODO - this will change
+file_path = 'data/onboarding_outputs.pickle'
 
 if st.session_state.submitted:
     retrieval_animation()
