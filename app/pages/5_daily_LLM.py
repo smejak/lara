@@ -22,10 +22,12 @@ current_datetime = datetime.now().strftime('%Y-%m-%d')
 daily_file_path = f'data/daily_outputs_{current_datetime}.pickle'
 
 def save_daily_outputs(daily_outputs):
+    """Save data into json"""
     with open(daily_file_path, 'wb') as file:
         pickle.dump(daily_outputs, file)
 
 def display_question(question, key):
+    """Shows the next questions"""
     response = st.text_area(question)
     button_key = f"next_button_{st.session_state.current_question}"
     if st.button('Next', key=button_key):
