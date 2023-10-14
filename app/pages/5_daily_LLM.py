@@ -11,6 +11,7 @@ from gtts import gTTS
 import openai
 from collections import defaultdict
 import json
+import base64
 
 
 def eval_res(question, user_response):
@@ -115,7 +116,7 @@ def display_question(question, key, prefill_text=''):
             st.warning('Please fill in the field before proceeding.')
             st.session_state.responses[key + "_check"] = False
         elif (decision=="REPEAT"):
-            st.warning(f'Please answer the question again. {reason}')
+            st.warning(f'Please answer the question again. {reason}')            
             st.session_state.responses[key + "_check"] = False
         else:
             raise RuntimeError('FML')
