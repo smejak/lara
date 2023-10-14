@@ -10,26 +10,31 @@ from scipy.io.wavfile import write
 from gtts import gTTS
 import openai
 from collections import defaultdict
+import json
 
 
 def eval_res(question, user_response):
     prompt_ = """
+            **ROLE:**
+            You are LARA, an advanced digital assistant designed specifically to help people with dementia. 
+            
             **TASK:**
-            You are LARA, an advanced digital assistant designed specifically to help people with dementia. Individuals with dementia often face challenges in recalling memories, recognizing familiar faces, and performing daily tasks. As the condition progresses, they might also find it challenging to navigate their surroundings, remember their medication schedules, or even recollect personal history and family details.
-            Determine whether the user's answer to the following question makes sense, return OK or REPEAT depending on whether you think the user should have included more information.
+            Determine whether the user's answer to the following question makes sense, return "OK" or "REPEAT" depending on whether you think the provided answer corresponds to the question.
         
-            **Desired Output Format:**
-            <string in ["OK", "REPEAT"]>
+            **Desired Output in a valid JSON Format:**
+            {{"reason":<string explaining the decision>, "decision": ["OK", "REPEAT"]}}
             
             **Example 1:**
             Question: List down the activities you engaged in today
             User Response: Hello, my name is Jessica and I am doing well.
             Verdict: REPEAT
+            Why you should decide like this: The response does not correspond to the question.
 
             **Example 2:**
-            Question: What were the highlight of your day? Mention any interactions with family, friends, or caregivers. What are the other important information I should be aware of?
-            User Response: I went shopping today to Trader Joe's, this was at 11am. Then I met my daughter Claire for lunch at 1pm. Now I am in my house cooking pasta for dinner. I am looking forward to watching TV later.
+            Question: List down the activities you engaged in today
+            User Response: I cooked dinner.
             Verdict: OK
+            Why you should decide like this: The response corresponds to the question.
             
             **Question:**
             {question}
@@ -37,11 +42,13 @@ def eval_res(question, user_response):
             **User Response:**
             {user_response}
 
-            Be carefull in correctly determining the response. This usecase is very important, let's make sure to get it right.
+            This usecase is very important, let's make sure to get it right. 
+
+            Please provide detailed reason explaining to the user in one or more sentences why they should answer the question again. Always structure the reason as if you were speaking to a person and provide enough detail and explanation.
             
             ###
             
-            Output the Question response:
+            Output the answer in the desired JSON format:
 
             """
             
@@ -50,8 +57,10 @@ def eval_res(question, user_response):
     llm = OpenAI(model_name="gpt-4", temperature=0.5, max_tokens=300)
     prompt = template.format(question=question, user_response=user_response)
     res = llm(prompt)
-
-    return res
+    json_response = json.loads(res)
+    print(f"RESPONSE LLM: {json_response}")
+    
+    return json_response['decision'], json_response['reason']
 
 # Transcription function (reintegrating the original functionality)
 def transcribe_audio(audio_file_name):
@@ -95,18 +104,23 @@ def display_question(question, key, prefill_text=''):
     print(prefill_text)
     response = st.text_area(question, value=prefill_text)
     button_key = f"next_button_{st.session_state.current_question}"
-    classified_res = eval_res(question, response)
+    decision, reason = eval_res(question, response)
     if st.button('Next', key=button_key):
-        if response and (classified_res=="OK"):
+        if response and (decision=="OK"):
             st.session_state.responses[key] = response
+            st.session_state.responses[key + "_check"] = True
             st.session_state.current_question += 1
             return response
         elif not response:
             st.warning('Please fill in the field before proceeding.')
-        elif (classified_res=="REPEAT"):
-            st.warning('Please answer the question again. ')
+            st.session_state.responses[key + "_check"] = False
+        elif (decision=="REPEAT"):
+            st.warning(f'Please answer the question again. {reason}')
+            st.session_state.responses[key + "_check"] = False
         else:
             raise RuntimeError('FML')
+        
+        
             
 def record_audio_and_transcribe(audio_name, key):
     audio_name = f"{audio_name}.wav"
@@ -149,12 +163,16 @@ def display_daily_form():
             pass
         except:
             st.session_state.responses[session_key] = None
+            st.session_state.responses[session_key + "_check"] = False
         
-        sb = st.button('Speak with LARA')
-        if sb:
-            _ = record_audio_and_transcribe("daily_activities", session_key)
+        if not st.session_state.responses[session_key + "_check"]:    
+            sb = st.button('Speak with LARA')
+            if sb:
+                _ = record_audio_and_transcribe("daily_activities", session_key)
+            else:
+                display_question('List down the activities you engaged in today.', session_key, st.session_state.responses[session_key])
         else:
-            display_question('List down the activities you engaged in today.', session_key, st.session_state.responses[session_key])
+            print("Not moving here anymore")
 
 
     # Daily Questions
@@ -168,6 +186,7 @@ def display_daily_form():
             pass
         except:
             st.session_state.responses[session_key] = None
+            st.session_state.responses[session_key + "_check"] = False
         
         if sb:
             _ = record_audio_and_transcribe("daily_activities", session_key)
