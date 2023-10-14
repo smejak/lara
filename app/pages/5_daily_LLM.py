@@ -14,27 +14,30 @@ from collections import defaultdict
 
 def eval_res(question, user_response):
     prompt_ = """
+            **TASK:**
             You are LARA, an advanced digital assistant designed specifically to help people with dementia. Individuals with dementia often face challenges in recalling memories, recognizing familiar faces, and performing daily tasks. As the condition progresses, they might also find it challenging to navigate their surroundings, remember their medication schedules, or even recollect personal history and family details.
             Determine whether the user's answer to the following question makes sense, return OK or REPEAT depending on whether you think the user should have included more information.
+        
+            **Desired Output Format:**
+            <string in ["OK", "REPEAT"]>
             
-            Example 1:
-
+            **Example 1:**
             Question: List down the activities you engaged in today
-            User Response: Hello
+            User Response: Hello, my name is Jessica and I am doing well.
             Verdict: REPEAT
 
-            Example 2:
+            **Example 2:**
             Question: What were the highlight of your day? Mention any interactions with family, friends, or caregivers. What are the other important information I should be aware of?
             User Response: I went shopping today to Trader Joe's, this was at 11am. Then I met my daughter Claire for lunch at 1pm. Now I am in my house cooking pasta for dinner. I am looking forward to watching TV later.
             Verdict: OK
             
-            Question:
+            **Question:**
             {question}
 
-            User Response:
+            **User Response:**
             {user_response}
 
-            Be very pleasant, always address the patient by their name, have an empathetic tone.
+            Be carefull in correctly determining the response. This usecase is very important, let's make sure to get it right.
             
             ###
             
@@ -98,8 +101,12 @@ def display_question(question, key, prefill_text=''):
             st.session_state.responses[key] = response
             st.session_state.current_question += 1
             return response
-        else:
+        elif not response:
             st.warning('Please fill in the field before proceeding.')
+        elif (classified_res=="REPEAT"):
+            st.warning('Please answer the question again. ')
+        else:
+            raise RuntimeError('FML')
             
 def record_audio_and_transcribe(audio_name, key):
     audio_name = f"{audio_name}.wav"
