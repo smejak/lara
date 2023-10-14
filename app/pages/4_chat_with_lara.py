@@ -5,7 +5,7 @@ import openai
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
 from llama_hub.file.pymu_pdf.base import PyMuPDFReader
-from llama_index import VectorStoreIndex, ServiceContext, LLMPredictor
+# from llama_index import VectorStoreIndex, ServiceContext, LLMPredictor
 from llama_index import download_loader
 
 import sounddevice as sd
@@ -16,6 +16,27 @@ from gtts import gTTS
 # play the converted audio
 import os
 from datetime import datetime
+
+import base64
+
+
+
+def autoplay_audio(file_path: str):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio controls autoplay="true">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            """
+        st.markdown(
+            md,
+            unsafe_allow_html=True,
+        )
+
+
+
 
 
 def generate_audio(text, language='en', audio_file_name='output_audio_lara.mp3'):
@@ -68,8 +89,8 @@ def load_memory():
         PDFReader = download_loader("PDFReader")
         loader = PDFReader()
         documents = loader.load_data(file=os.path.join(pdf_folder, file))
-        index = VectorStoreIndex.from_documents(documents)
-        index.storage_context.persist()
+        # index = VectorStoreIndex.from_documents(documents)
+        # index.storage_context.persist()
         context += documents[0].text
 
     context += f'/n {datetime.now()}'
@@ -140,7 +161,8 @@ if user_input:
     st.session_state.context += response
     st.write(response.strip('"'))
     generate_audio(response.strip('"'))
-    st.audio('./output_audio_lara.mp3')
+    # st.audio('./output_audio_lara.mp3')
+    autoplay_audio("./output_audio_lara.mp3")
     # play_audio()
 
     
