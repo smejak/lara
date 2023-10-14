@@ -15,6 +15,8 @@ import base64
 
 
 def eval_res(question, user_response):
+    print('RUNNING GPT-4 to check the answer')
+    
     prompt_ = """
             **ROLE:**
             You are LARA, an advanced digital assistant designed specifically to help people with dementia. 
@@ -157,8 +159,8 @@ def display_daily_form():
 
     # Activities
     elif st.session_state.current_question == 2:
-        st.subheader('Activities')
-        session_key = 'Day Activities'
+        st.subheader('List down the activities you engaged in today.')
+        session_key = 'Day Activity'
         try:
             print(st.session_state.responses[session_key])
             pass
@@ -178,9 +180,8 @@ def display_daily_form():
 
     # Daily Questions
     elif st.session_state.current_question == 3:
-        st.subheader('Daily Questions')
+        st.subheader('What were the highlight of your day? Mention any interactions with family, friends, caregivers and any other information.')
         session_key = 'Day Highlight'
-        sb = st.button('Speak with LARA')
         
         try:
             print(st.session_state.responses[session_key])
@@ -188,11 +189,12 @@ def display_daily_form():
         except:
             st.session_state.responses[session_key] = None
             st.session_state.responses[session_key + "_check"] = False
-        
-        if sb:
-            _ = record_audio_and_transcribe("daily_activities", session_key)
-        else:
-            display_question('What were the highlight of your day? Mention any interactions with family, friends, caregivers and any other important information.', 'Day Highlight', session_key)
+        if not st.session_state.responses[session_key + "_check"]:    
+            sb = st.button('Speak with LARA')
+            if sb:
+                _ = record_audio_and_transcribe("daily_activities", session_key)
+            else:
+                display_question('What were the highlight of your day? Mention any interactions with family, friends, caregivers and any other information.', 'Day Highlight', session_key)
 
     # Privacy and Security
     elif st.session_state.current_question == 4:
