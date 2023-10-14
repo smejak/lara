@@ -20,6 +20,23 @@ from gtts import gTTS
 # play the converted audio
 import os
 from datetime import datetime
+import base64
+
+
+
+def autoplay_audio(file_path: str):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio controls autoplay="true">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            """
+        st.markdown(
+            md,
+            unsafe_allow_html=True,
+        )
 
 def generate_audio(text, language='en', audio_file_name='output_audio_lara.mp3'):
     # Passing the text and language to the engine,
@@ -39,6 +56,11 @@ def play_audio(audio_file_name='output_audio_lara.mp3'):
 
 
 st.title("Reminders")
+
+
+llm = OpenAI(model_name="gpt-4", temperature=1, max_tokens=300)
+res = llm(f"Convert this date and time to a human-readable format, always exclude seconds: {datetime.now()}")
+st.subheader(res)
 
 
 data_folder = 'data/'
@@ -78,4 +100,5 @@ if st.button("Get Reminder"):
 
     st.write(res.strip('"'))
     generate_audio(res.strip('"'))
-    st.audio('./output_audio_lara.mp3')
+    # st.audio('./output_audio_lara.mp3')
+    autoplay_audio('./output_audio_lara.mp3')
