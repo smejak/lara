@@ -108,7 +108,7 @@ if st.button("Get Reminder"):
     prompt = template.format(context=context, time=str(current_datetime))
     res = llm(prompt)
 
-    st.subheader(res.strip('"'))
+    st.text(res.strip('"'))
     generate_audio(res.strip('"'))
     # st.audio('./output_audio_lara.mp3')
     autoplay_audio('./output_audio_lara.mp3')

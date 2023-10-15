@@ -34,8 +34,8 @@ if st.button('Find my current location'):
 # Placeholder map showing a predefined location (can be replaced with real-time geolocation in the future)
 st.subheader('Map of Your Current Location')
 map_data = {
-    'lat': [40.730610],  # Placeholder latitude
-    'lon': [-73.935242]  # Placeholder longitude
+    'lat': [37.573890],  # Placeholder latitude
+    'lon': [-122.378562]  # Placeholder longitude 
 }
 st.map(map_data)
 
