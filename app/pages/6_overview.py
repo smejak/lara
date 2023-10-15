@@ -22,7 +22,7 @@ st.title("LARA Overview")
 
 def load_memory():
     data_folder = 'data/'
-    pickle_files = [f for f in os.listdir(data_folder) if f.endswith('.json')]
+    pickle_files = [f for f in os.listdir(data_folder) if f.endswith('outputs.json')]
 
     context = ''
 
