@@ -129,7 +129,7 @@ daily_file_path = f'data/daily_outputs_{current_datetime}.json'
 def save_daily_outputs(daily_outputs):
     """Save data into json"""
     with open(daily_file_path, 'w') as file:
-        json.dump(daily_outputs, file)
+        json.dump(daily_outputs, file, default=date_serializer)
 
 def display_question(question, key, prefill_text=''):
     """Shows the next questions"""
