@@ -62,23 +62,13 @@ def querry_llm(context):
             Output the user information in the following Markdown table format, create multiple tables for different type of infomation. 
             Include three tables: Daily Highlights, General Information Table, Medical Records Table:
             
-            **Output Example:**
-            Daily Highlights
+            **Output Table Example:**
+            General Personal Information:
             | <Category> | <Data>          |
             |------------------|------------------|
             | ...              | ...              |
 
-            General User Information Table
-            | <Category> | <Data>          |
-            |------------------|------------------|
-            | Name             | [User's Name]    |
-            | ...              | ...              |
-
-            Medical Records Table
-            | <Category> | <Data>          |
-            |------------------|------------------|
-            | ...              | ...              |
-
+            
             
             ###
             
@@ -89,6 +79,9 @@ def querry_llm(context):
     
     llm = OpenAI(model_name="gpt-4", temperature=0.5, max_tokens=300)
     prompt = template.format(context=context)
+    
+    print("THE PROMPT IS: " + "\n" + str(prompt))
+    
     res = llm(prompt)
 
     return res

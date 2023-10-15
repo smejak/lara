@@ -106,6 +106,9 @@ if st.button("Get Reminder"):
     llm = OpenAI(model_name="gpt-4", temperature=0, max_tokens=300)
     current_datetime = datetime.now().strftime('%Y-%m-%d')
     prompt = template.format(context=context, time=str(current_datetime))
+    
+    print("THE PROMPT IS: " + "\n" + str(prompt))
+    
     res = llm(prompt)
 
     st.text(res.strip('"'))
