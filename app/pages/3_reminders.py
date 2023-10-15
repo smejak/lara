@@ -94,7 +94,7 @@ template = PromptTemplate(template=prompt_, input_variables=["context", "time"])
 
 
 if st.button("Get Reminder"):
-    llm = OpenAI(model_name="gpt-4", temperature=0.5, max_tokens=300)
+    llm = OpenAI(model_name="gpt-4", temperature=0, max_tokens=300)
     prompt = template.format(context=context, time=datetime.now())
     res = llm(prompt)
 
