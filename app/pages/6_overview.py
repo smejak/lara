@@ -60,7 +60,6 @@ def querry_llm(context):
 
             **Desired Output Format:**
             Output the user information in the following Markdown table format, create multiple tables for different type of infomation. 
-            Include three tables: Daily Highlights, General Information Table, Medical Records Table:
             
             **Output Table Example:**
             General Personal Information:
