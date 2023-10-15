@@ -49,32 +49,40 @@ def load_memory():
 
 def querry_llm(context):
     prompt_ = """
-            You are LARA, an advanced digital assistant designed specifically to help people with dementia. Individuals with dementia often face challenges in recalling memories, recognizing familiar faces, and performing daily tasks. As the condition progresses, they might also find it challenging to navigate their surroundings, remember their medication schedules, or even recollect personal history and family details.
-            You are a version of LARA that helps dementia patients regain memory by replying to their questions.
-            Use the Context below to compile and output relevant user information in a Markdown table format. If you cannot find a relevant piece of information, you can indicate "Not Available" in the table. If the user seems confused or you don't understand the question, guide them through simple breathing exercises to help them calm down.
+            **ROLE:**
+            - You are a data reconstruction expert. Who specializes in taking data from JSON inputs and formatting them in a human-readable formatted string.
+            
+            **TASK:**
+            - Use the JSON "Context" below to compile markdown output containing relevant user information in a Markdown table format. As shown in the "Examples".
 
-            Context:
+            **Context:**
             {context}
 
-            Output the user information in the following Markdown table format, create multiple tables for different type of infomation. Include three tables: Daily Highlights, General Information Table, Medical Records Table:
+            **Desired Output Format:**
+            Output the user information in the following Markdown table format, create multiple tables for different type of infomation. 
+            Include three tables: Daily Highlights, General Information Table, Medical Records Table:
             
+            **Output Example:**
             Daily Highlights
-            | FILL_IN | FILL_IN          |
+            | <Category> | <Data>          |
             |------------------|------------------|
             | ...              | ...              |
 
-            General Information Table
-            | Information Type | Details          |
+            General User Information Table
+            | <Category> | <Data>          |
             |------------------|------------------|
             | Name             | [User's Name]    |
             | ...              | ...              |
 
             Medical Records Table
-            | FILL_IN | FILL_IN          |
+            | <Category> | <Data>          |
             |------------------|------------------|
             | ...              | ...              |
 
-
+            
+            ###
+            
+            Output the user information in the following Markdown table format, create multiple tables for different type of infomation:
             """
             
     template = PromptTemplate(template=prompt_, input_variables=["context"])
@@ -84,6 +92,7 @@ def querry_llm(context):
     res = llm(prompt)
 
     return res
+
 
 ####### RUNNING FROM HERE
 context = load_memory()
