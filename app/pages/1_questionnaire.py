@@ -7,8 +7,16 @@ import datetime
 
 def date_serializer(obj):
     """Custom serializer for date objects"""
+    import datetime
+    
+    # Handle datetime objects
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    
+    # Handle date objects
     if isinstance(obj, datetime.date):
         return obj.isoformat()
+
     raise TypeError("Type not serializable")
 
 
@@ -53,6 +61,7 @@ def retrieval_animation():
 def save_onboarding_outputs(outputs, medicine):
     """Write the onboarding info into the file path"""
     with open(file_path, 'w') as file:
+        print(outputs)
         json.dump(outputs, file, default=date_serializer)
     with open('data/onboarding_outputs.txt', 'w') as file:
         for k, v in outputs.items():
@@ -60,7 +69,7 @@ def save_onboarding_outputs(outputs, medicine):
     
     ## Save medicine info into a separate structured file for deterministic retrieval## 
     with open('data/medicine_info.json', 'w') as file:
-        json.dump(medicine, file)
+        json.dump(medicine, file, default=date_serializer)
         
 
 def display_input_row(index):
@@ -197,7 +206,7 @@ def display_onboarding_form():
             'Legal Documents Location': legal_docs_location,
             'Dietary Preferences': dietary_preferences
         }
-        save_onboarding_outputs(outputs)
+        save_onboarding_outputs(outputs, medications_info)
         st.session_state.submitted = True
 
 
