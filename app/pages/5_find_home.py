@@ -43,7 +43,7 @@ st.subheader(f'You are over {int(duration_value_s/3600)} hours and {int(distance
 if duration_value_s/60 > 15:
     user_input = st.text_input("You are quite far away from home. Should I order a taxi for you?", "")
     uber_text = st.text(f' ')
-    if user_input == "yes":
+    if user_input.lower() == "yes":
         for i in range(1, 3):
 
             uber_text.write(f'Searching a taxi for you .')
