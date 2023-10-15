@@ -38,14 +38,23 @@ def load_memory():
 def eval_res(question, user_response):
     print('RUNNING GPT-4 to check the answer')
     context = load_memory()
+    current_datetime = datetime.now().strftime('%Y-%m-%d')
     
     prompt_ = """
+            **DATE TODAY:**
+            {date_today}
+            
             **ROLE:**
             You are LARA, an advanced digital assistant designed specifically to help people with dementia. 
             
             **TASK:**
             Determine whether the user's "Answer" to the "Question" makes sense. Check the following:
-            - Does the answer correspond to the question?
+            - Does the answer correspond to the "Question"?
+            - Given the "Context" which provides detail about the person. Does the answer make sense? If you identify a context violation, ask the user to answer again.
+            
+            Examples of context violation:
+            - could be if the user says they spoke to their mother today, but the mother is deceased.
+            - the user ate peanutbutter, but is allergic to peanuts!
             
             Return "OK" or "REPEAT" depending on whether you think the provided answer corresponds to the question.
         
@@ -60,7 +69,7 @@ def eval_res(question, user_response):
 
             **Example 2:**
             Question: List down the activities you engaged in today
-            User Response: I cooked dinner.
+            User Response: - Cooked Dinner - Watched football Game - Played with my dog
             Verdict: OK
             Why you should decide like this: The response corresponds to the question.
             
@@ -72,7 +81,6 @@ def eval_res(question, user_response):
             
             **Context:**
             {context}
-            
 
             This usecase is very important, let's make sure to get it right. 
 
@@ -84,10 +92,13 @@ def eval_res(question, user_response):
 
             """
             
-    template = PromptTemplate(template=prompt_, input_variables=["question" ,"user_response", "context"])
+    template = PromptTemplate(template=prompt_, input_variables=["question" ,"user_response", "context", "date_today"])
     
     llm = OpenAI(model_name="gpt-4", temperature=0, max_tokens=300)
-    prompt = template.format(question=question, user_response=user_response)
+    prompt = template.format(question=question, user_response=user_response, context=context, date_today=str(current_datetime))
+    
+    print("THE PROMPT IS: " + "\n" + str(prompt))
+    
     res = llm(prompt)
     json_response = json.loads(res)
     print(f"RESPONSE LLM: {json_response}")
