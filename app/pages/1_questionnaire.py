@@ -1,10 +1,15 @@
 import streamlit as st
-import requests
-import pickle
 import time
 import json
-
 from llama_hub.file.pymu_pdf.base import PyMuPDFReader
+import datetime
+
+
+def date_serializer(obj):
+    """Custom serializer for date objects"""
+    if isinstance(obj, datetime.date):
+        return obj.isoformat()
+    raise TypeError("Type not serializable")
 
 
 ### SUPPORTING CODE ###
@@ -21,8 +26,8 @@ def loading_animation():
     st.balloons()
 
     st.subheader('Thank you for providing the onboarding information!')
-    with open(file_path, 'rb') as file:
-        outputs = pickle.load(file)
+    with open(file_path, 'r') as file:
+        outputs = json.load(file)
     for k, v in outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
 
@@ -39,16 +44,16 @@ def retrieval_animation():
     st.balloons()
 
     st.subheader('Thank you for providing the onboarding information!')
-    with open(file_path, 'rb') as file:
-        outputs = pickle.load(file)
+    with open(file_path, 'r') as file:
+        outputs = json.load(file)
     for k, v in outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
 
 
 def save_onboarding_outputs(outputs, medicine):
     """Write the onboarding info into the file path"""
-    with open(file_path, 'wb') as file:
-        pickle.dump(outputs, file)
+    with open(file_path, 'w') as file:
+        json.dump(outputs, file, default=date_serializer)
     with open('data/onboarding_outputs.txt', 'w') as file:
         for k, v in outputs.items():
             file.write(f"{k.capitalize().replace('_', ' ')}: {v}\n")
@@ -204,9 +209,9 @@ st.title('Onboarding Questionnaire')
 if 'submitted' not in st.session_state:
     st.session_state.submitted = False
 
-# Specify the file path to save the pickle file
+# Specify the file path to save the json file
 # TODO - this will change
-file_path = 'data/onboarding_outputs.pickle'
+file_path = 'data/onboarding_outputs.json'
 
 if st.session_state.submitted:
     retrieval_animation()

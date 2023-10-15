@@ -1,6 +1,5 @@
 import streamlit as st
 from datetime import datetime
-import pickle
 import openai
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
@@ -12,21 +11,33 @@ import openai
 from collections import defaultdict
 import json
 import base64
+import datetime
+
+
+def date_serializer(obj):
+    """Custom serializer for date objects"""
+    if isinstance(obj, datetime.date):
+        return obj.isoformat()
+    raise TypeError("Type not serializable")
 
 
 def load_memory():
     data_folder = 'data/'
-    pickle_files = [f for f in os.listdir(data_folder) if f.endswith('.pickle')]
+    json_files = [f for f in os.listdir(data_folder) if f.endswith('.json')]
 
     context = ''
 
-    for file in pickle_files:
-        with open(os.path.join(data_folder, file), 'rb') as f:
-            data = pickle.load(f)
+    for file in json_files:
+        with open(os.path.join(data_folder, file), 'r') as f:
+            data = json.load(f)
             context += str(data)
             
+    return context
+
+
 def eval_res(question, user_response):
     print('RUNNING GPT-4 to check the answer')
+    context = load_memory()
     
     prompt_ = """
             **ROLE:**
@@ -60,6 +71,7 @@ def eval_res(question, user_response):
             {user_response}
             
             **Context:**
+            {context}
             
 
             This usecase is very important, let's make sure to get it right. 
@@ -72,7 +84,7 @@ def eval_res(question, user_response):
 
             """
             
-    template = PromptTemplate(template=prompt_, input_variables=["question" ,"user_response"])
+    template = PromptTemplate(template=prompt_, input_variables=["question" ,"user_response", "context"])
     
     llm = OpenAI(model_name="gpt-4", temperature=0, max_tokens=300)
     prompt = template.format(question=question, user_response=user_response)
@@ -111,13 +123,13 @@ if 'responses' not in st.session_state:
 # Automatically fetch the current date and time
 current_datetime = datetime.now().strftime('%Y-%m-%d')
 
-# Specify the file path where you want to save the pickle file
-daily_file_path = f'data/daily_outputs_{current_datetime}.pickle'
+# Specify the file path where you want to save the json file
+daily_file_path = f'data/daily_outputs_{current_datetime}.json'
 
 def save_daily_outputs(daily_outputs):
     """Save data into json"""
-    with open(daily_file_path, 'wb') as file:
-        pickle.dump(daily_outputs, file)
+    with open(daily_file_path, 'w') as file:
+        json.dump(daily_outputs, file)
 
 def display_question(question, key, prefill_text=''):
     """Shows the next questions"""
@@ -233,8 +245,8 @@ def display_daily_form():
 
 if st.session_state.daily_submitted:
     st.subheader('Thank you for providing today\'s diary entry!')
-    with open(daily_file_path, 'rb') as file:
-        daily_outputs = pickle.load(file)
+    with open(daily_file_path, 'r') as file:
+        daily_outputs = json.load(file)
     for k, v in daily_outputs.items():
         st.write(f"**{k.capitalize().replace('_', ' ')}:** {v}")
 else:
