@@ -80,19 +80,19 @@ def load_memory():
             data = json.load(f)
             context += str(data)
             
-    pdf_folder = 'datapdf/'
-    pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith('.pdf')]
+    # pdf_folder = 'datapdf/'
+    # pdf_files = [f for f in os.listdir(pdf_folder) if f.endswith('.pdf')]
 
-    for file in pdf_files:
-        reader = PyMuPDFReader()
-        PDFReader = download_loader("PDFReader")
-        loader = PDFReader()
-        documents = loader.load_data(file=os.path.join(pdf_folder, file))
-        # index = VectorStoreIndex.from_documents(documents)
-        # index.storage_context.persist()
-        context += documents[0].text
+    # for file in pdf_files:
+    #     reader = PyMuPDFReader()
+    #     PDFReader = download_loader("PDFReader")
+    #     loader = PDFReader()
+    #     documents = loader.load_data(file=os.path.join(pdf_folder, file))
+    #     # index = VectorStoreIndex.from_documents(documents)
+    #     # index.storage_context.persist()
+    #     context += documents[0].text
 
-    context += f'/n {datetime.now()}'
+    # context += f'/n {datetime.now()}'
 
     return context
 
@@ -160,10 +160,8 @@ else:
 if user_input:
     response = querry_llm(context, user_input)
     st.session_state.context += response
-    st.write(response.strip('"'))
+    st.subheader(response.strip('"'))
     generate_audio(response.strip('"'))
     # st.audio('./output_audio_lara.mp3')
     autoplay_audio("./output_audio_lara.mp3")
     # play_audio()
-
-    

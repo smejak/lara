@@ -1,0 +1,82 @@
+[
+    {
+        "Day Mood": "Calm",
+        "Day Activity": "- Listened to the radio in the morning\n- Looked through old photo albums\n- Took a short nap in the afternoon",
+        "Day Activity_check": true,
+        "Day Highlight": "- Sophia visited and brought homemade soup\n- Listened to a favorite vinyl record",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-13"
+    },
+    {
+        "Day Mood": "Peaceful",
+        "Day Activity": "- Watched birds from the window\n- Read a few pages from a familiar book\n- Rested in the living room",
+        "Day Activity_check": true,
+        "Day Highlight": "- Daniel called and shared stories from school\n- Ate a comforting dinner prepared by the caregiver",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-12"
+    },
+    {
+        "Day Mood": "Content",
+        "Day Activity": "- Enjoyed the morning sun in the balcony\n- Listened to calming music\n- Slept a bit after lunch",
+        "Day Activity_check": true,
+        "Day Highlight": "- Received a letter from an old friend\n- Helen dropped by for a short visit",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-11"
+    },
+    {
+        "Day Mood": "Relaxed",
+        "Day Activity": "- Did a simple puzzle\n- Watched a classic film on TV\n- Sat in the garden in the evening",
+        "Day Activity_check": true,
+        "Day Highlight": "- The caregiver made a favorite dessert\n- Received a warm blanket as a gift from Sophia",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-10"
+    },
+    {
+        "Day Mood": "Reflective",
+        "Day Activity": "- Looked at Emily's paintings\n- Listened to an old radio show\n- Rested in the bedroom",
+        "Day Activity_check": true,
+        "Day Highlight": "- A neighbor dropped by with fresh flowers\n- Found a memorable note from Emily in a book",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-09"
+    },
+    {
+        "Day Mood": "Comfortable",
+        "Day Activity": "- Enjoyed a warm bath\n- Ate a simple breakfast\n- Took a short walk in the garden",
+        "Day Activity_check": true,
+        "Day Highlight": "- A squirrel visited the garden\n- Received a gentle massage from the caregiver",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-08"
+    },
+    {
+        "Day Mood": "Quiet",
+        "Day Activity": "- Watched the rain from the window\n- Drank warm tea\n- Listened to calming melodies",
+        "Day Activity_check": true,
+        "Day Highlight": "- Helen called and shared comforting words\n- The caregiver read a short story aloud",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-07"
+    },
+    {
+        "Day Mood": "Satisfied",
+        "Day Activity": "- Spent time arranging flowers in a vase\n- Rested on the couch\n- Ate a light dinner",
+        "Day Activity_check": true,
+        "Day Highlight": "- A childhood song played on the radio\n- The house smelled of fresh-baked bread",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-06"
+    },
+    {
+        "Day Mood": "Hopeful",
+        "Day Activity": "- Sat in the sunlight by the window\n- Ate a favorite snack\n- Took an afternoon nap",
+        "Day Activity_check": true,
+        "Day Highlight": "- Daniel sent a picture of his classroom\n- Enjoyed the scent of a new candle",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-05"
+    },
+    {
+        "Day Mood": "Grateful",
+        "Day Activity": "- Listened to birds chirping\n- Ate a nourishing lunch\n- Watched the sunset from the balcony",
+        "Day Activity_check": true,
+        "Day Highlight": "- Received a warm call from Sophia\n- The caregiver shared a heartwarming story",
+        "Day Highlight_check": true,
+        "Record Datetime": "2023-10-04"
+    }
+]
