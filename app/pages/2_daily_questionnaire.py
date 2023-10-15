@@ -11,7 +11,7 @@ import openai
 from collections import defaultdict
 import json
 import base64
-import datetime
+from datetime import datetime
 
 
 def date_serializer(obj):
