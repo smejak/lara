@@ -14,7 +14,7 @@ gmaps = googlemaps.Client(key=os.getenv("GOOGLE_API_KEY"))
 st.title("Find my Home")
 
 start = "1868 Floribunda Avenue, Hillsborough, CA"
-end = "Ayrshire Farm Lane, Stanford, CA"
+end = "564 Market Street, San Francisco, 94 104, CA"
 
 directions_result = gmaps.directions(start, end)
 
@@ -38,18 +38,23 @@ for step in directions_result[0]['legs'][0]['steps']:
     i += 1
     #coordinates[1, i] = step['end_location']
 
-st.subheader(f'You are  {int(duration_value_s/60)} minutes and {int(distance_value_m/1600)} miles away from your home.')
+st.subheader(f'You are over {int(duration_value_s/3600)} hours and {int(distance_value_m/1600)} miles away from your home.')
 
 if duration_value_s/60 > 15:
-    user_input = st.text_input("You are far away from home. Do you have a ride or should I order a taxi for you?", "")
+    user_input = st.text_input("You are quite far away from home. Should I order a taxi for you?", "")
+    uber_text = st.text(f' ')
+    if user_input == "yes":
+        for i in range(1, 3):
 
-    if user_input == 'yes':
+            uber_text.write(f'Searching a taxi for you .')
+            time.sleep(1)
+            uber_text.write(f'Searching a taxi for you ..')
+            time.sleep(1)
+            uber_text.write(f'Searching a taxi for you ...')
+            time.sleep(1)
 
-        uber_text = st.subheader(
-            f'Fining a taxi for you...')
-        time.sleep(13)
-        uber_text = st.subheader(
-            f'An uber will arrive in 4 minutes to pick you up. It is a grey Toyota Corlloa and the license plate is 8XYWNS86.')
+        uber_text.write(
+            f'An uber will arrive in 4 minutes to pick you up. It is a grey Toyota Corolla and the license plate is 8XYWNS86.')
 
 mid_loc_lat = (start_loc['lat'] + end_loc['lat'])/2
 mid_loc_lng = (start_loc['lng'] + end_loc['lng'])/2
