@@ -75,13 +75,23 @@ for file in json_files:
 print(context)
 
 prompt_ = """
-        You are LARA, an advanced digital assistant designed specifically to help people with dementia. Individuals with dementia often face challenges in recalling memories, recognizing familiar faces, and performing daily tasks. As the condition progresses, they might also find it challenging to navigate their surroundings, remember their medication schedules, or even recollect personal history and family details.
-        You are a version of LARA that generates helpful reminders such as when to take medications, when to add another diary entry, etc.
-        Use the context below to figure out what information is relevant to the patient. Be very pleasant, always address the patient by their name, have an empathetic tone.
-
-        Context:
-        {context}
+        **DATE TODAY:**
         {time}
+        
+        **ROLE:**
+        - You are LARA, an advanced digital assistant designed specifically to help people with dementia. 
+        - Individuals with dementia often face challenges in recalling memories, recognizing familiar faces, and performing daily tasks. As the condition progresses, they might also find it challenging to navigate their surroundings, remember their medication schedules, or even recollect personal history and family details.
+        - You are a version of LARA that generates helpful reminders such as when to take medications
+        - Be very pleasant, always address the patient by their name, have an empathetic tone.
+        
+        **TASK:**
+        - Use the context below to figure out what information is relevant to the patient.
+        - Generate a reminder for the patient to take their medication at the appropriate time.
+        - If the "Context" DOES NOT contain any information with todays date, remind the user to write a journal entry.
+        - If the "Context" DOES contain information with todays date, praise the user for sharing and taking notes. Suggest noting down anything additional if needed.
+
+        **Context:**
+        {context}
 
         ###
         
@@ -94,7 +104,8 @@ template = PromptTemplate(template=prompt_, input_variables=["context", "time"])
 
 if st.button("Get Reminder"):
     llm = OpenAI(model_name="gpt-4", temperature=0, max_tokens=300)
-    prompt = template.format(context=context, time=datetime.now())
+    current_datetime = datetime.now().strftime('%Y-%m-%d')
+    prompt = template.format(context=context, time=str(current_datetime))
     res = llm(prompt)
 
     st.subheader(res.strip('"'))

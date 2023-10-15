@@ -127,6 +127,7 @@ def querry_llm(context, user_input):
             - If the user seems confused or you don't understand the question, guide them through simple breathing exercises to help them calm down, then tell them to navigate to the find_home tab to see live navigation.
             - If the user asks about a deceased person, remind them of the time they spent together and respectfully explain the situation.
             - If the user asks about their medications, remind them what they're supposed to take and when.
+            - Pay close attention to the date today and the dates in the information in the "Context"
 
             **Question:**
             {user_input}
