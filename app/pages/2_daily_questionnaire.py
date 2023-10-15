@@ -82,10 +82,11 @@ def eval_res(question, user_response):
             **Context:**
             {context}
 
-            This usecase is very important, let's make sure to get it right. 
+            This usecase is very important, let's make sure to get it right. User can provide brief answers, but must be coherent and relevant.
 
             Please provide detailed reason explaining to the user in one or more sentences why they should answer the question again. Always structure the reason as if you were speaking to a person and provide enough detail and explanation.
             
+            Be very pleasant, always address the patient by their name, have an empathetic tone.
             ###
             
             Output the answer in the desired JSON format:
@@ -240,7 +241,7 @@ def display_daily_form():
             if sb:
                 _ = record_audio_and_transcribe("daily_activities", session_key)
             else:
-                display_question('What were the highlight of your day? Mention any interactions with family, friends, caregivers and any other information.', 'Day Highlight', st.session_state.responses[session_key])
+                display_question('Please add any important information you want to remember.', 'Day Highlight', st.session_state.responses[session_key])
         else:
             print("Not moving here anymore")
 
