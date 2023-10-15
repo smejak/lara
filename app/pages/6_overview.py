@@ -63,7 +63,7 @@ def querry_llm(context):
             
             **Output Table Example:**
             General Personal Information:
-            | <Category> | <Data>          |
+            | <Category>       | <Data>           |
             |------------------|------------------|
             | ...              | ...              |
 
