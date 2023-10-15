@@ -52,7 +52,7 @@ if duration_value_s/60 > 15:
         call = st.button(' Call your contact person ')
 
     if uber == True:
-        uber_text = st.text(f' ')
+        uber_text = st.write(f' ')
         for i in range(1, 3):
 
             uber_text.write(f'Searching a taxi for you .')
@@ -65,6 +65,9 @@ if duration_value_s/60 > 15:
         uber_text.write(
             f'An uber will arrive in 4 minutes to pick you up. It is a grey Toyota Corolla and the license plate is 8XYWNS86.')
 
+    if call == True:
+        call_text = st.write(f'Try to call your sister Helen Stone, she lives in San Francisco and could pick you up. '
+                             f'  Her phone number is 415-555-1234.')
 mid_loc_lat = (start_loc['lat'] + end_loc['lat'])/2
 mid_loc_lng = (start_loc['lng'] + end_loc['lng'])/2
 
