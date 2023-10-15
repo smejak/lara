@@ -41,9 +41,18 @@ for step in directions_result[0]['legs'][0]['steps']:
 st.subheader(f'You are over {int(duration_value_s/3600)} hours and {int(distance_value_m/1600)} miles away from your home.')
 
 if duration_value_s/60 > 15:
-    user_input = st.text_input("You are quite far away from home. Should I order a taxi for you?", "")
-    uber_text = st.text(f' ')
-    if user_input == "yes":
+    st.subheader("It seems like you are quite far away from home. Please select one of the options below")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        uber = st.button('   Call a taxi  ')
+
+    with col2:
+        call = st.button(' Call your contact person ')
+
+    if uber == True:
+        uber_text = st.text(f' ')
         for i in range(1, 3):
 
             uber_text.write(f'Searching a taxi for you .')
