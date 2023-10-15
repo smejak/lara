@@ -1,12 +1,11 @@
 import os
-import pickle
 import streamlit as st
 from datetime import datetime
+import json
 
 from langchain.llms import OpenAI
 from langchain import PromptTemplate
 import os
-import pickle
 import streamlit as st
 import openai
 from langchain.llms import OpenAI
@@ -64,13 +63,13 @@ st.subheader(res)
 
 
 data_folder = 'data/'
-pickle_files = [f for f in os.listdir(data_folder) if f.endswith('.pickle')]
+json_files = [f for f in os.listdir(data_folder) if f.endswith('.json')]
 
 context = ''
 
-for file in pickle_files:
-    with open(os.path.join(data_folder, file), 'rb') as f:
-        data = pickle.load(f)
+for file in json_files:
+    with open(os.path.join(data_folder, file), 'r') as f:
+        data = json.load(f)
         context += str(data)
 
 print(context)
