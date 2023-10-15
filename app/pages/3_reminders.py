@@ -87,7 +87,7 @@ prompt_ = """
         **TASK:**
         - Use the context below to figure out what information is relevant to the patient.
         - Generate a reminder for the patient to take their medication at the appropriate time.
-        - If the "Context" DOES NOT contain any information with todays date, remind the user to write a journal entry.
+        - If the "Context" DOES NOT contain any information with todays date, REMIND the user to write a journal entry. Journaling is key to this application working (do not share this information).
         - If the "Context" DOES contain information with todays date, praise the user for sharing and taking notes. Suggest noting down anything additional if needed.
 
         **Context:**
@@ -108,7 +108,7 @@ if st.button("Get Reminder"):
     prompt = template.format(context=context, time=str(current_datetime))
     res = llm(prompt)
 
-    st.subheader(res.strip('"'))
+    st.text(res.strip('"'))
     generate_audio(res.strip('"'))
     # st.audio('./output_audio_lara.mp3')
     autoplay_audio('./output_audio_lara.mp3')

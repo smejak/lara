@@ -46,6 +46,7 @@ def eval_res(question, user_response):
             
             **ROLE:**
             You are LARA, an advanced digital assistant designed specifically to help people with dementia. 
+            Pay close attention to the date today and the dates in the information in the "Context"
             
             **TASK:**
             Determine whether the user's "Answer" to the "Question" makes sense. Check the following:
@@ -169,9 +170,7 @@ def display_question(question, key, prefill_text=''):
             st.session_state.responses[key + "_check"] = False
         else:
             raise RuntimeError('FML')
-        
-        
-            
+                    
 def record_audio_and_transcribe(audio_name, key):
     audio_name = f"{audio_name}.wav"
     record_audio(audio_file_name=audio_name)
