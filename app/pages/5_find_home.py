@@ -5,6 +5,7 @@ import numpy as np
 import streamlit as st
 import dotenv
 import os
+import time
 
 dotenv.load_dotenv()
 
@@ -37,11 +38,18 @@ for step in directions_result[0]['legs'][0]['steps']:
     i += 1
     #coordinates[1, i] = step['end_location']
 
-st.write('Duration: ', duration_text)
-st.write('Distance: ', distance_text)
+st.subheader(f'You are  {int(duration_value_s/60)} minutes and {int(distance_value_m/1600)} miles away from your home.')
 
 if duration_value_s/60 > 15:
-    st.write('Do you have a ride home or should I book a ride for you?')
+    user_input = st.text_input("You are far away from home. Do you have a ride or should I order a taxi for you?", "")
+
+    if user_input == 'yes':
+
+        uber_text = st.subheader(
+            f'Fining a taxi for you...')
+        time.sleep(13)
+        uber_text = st.subheader(
+            f'An uber will arrive in 4 minutes to pick you up. It is a grey Toyota Corlloa and the license plate is 8XYWNS86.')
 
 mid_loc_lat = (start_loc['lat'] + end_loc['lat'])/2
 mid_loc_lng = (start_loc['lng'] + end_loc['lng'])/2
