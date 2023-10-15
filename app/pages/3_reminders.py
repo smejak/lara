@@ -111,7 +111,7 @@ if st.button("Get Reminder"):
     
     res = llm(prompt)
 
-    st.text(res.strip('"'))
+    st.write(res.strip('"'))
     generate_audio(res.strip('"'))
     # st.audio('./output_audio_lara.mp3')
     autoplay_audio('./output_audio_lara.mp3')
