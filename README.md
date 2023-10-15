@@ -1,4 +1,4 @@
-# LARA: Life Aid & Recovery Assistant
+# LARA
 
 ## What it does
 LARA, the Life Aid & Recovery Assistant, is a digital assistant tailored for individuals with dementia. It aids users in their day-to-day activities, reminds them of their medication, helps them recognize family members, and assists with basic tasks. Moreover, in situations where the user is lost or distressed, LARA provides guidance to get them back home and connects them with emergency contacts.
