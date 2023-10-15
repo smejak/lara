@@ -52,7 +52,7 @@ if duration_value_s/60 > 15:
         call = st.button(' Call your contact person ')
 
     if uber == True:
-        uber_text = st.write(f' ')
+        uber_text = st.text(f' ')
         for i in range(1, 3):
 
             uber_text.write(f'Searching a taxi for you .')
