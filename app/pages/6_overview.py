@@ -74,7 +74,7 @@ def querry_llm(context):
             
     template = PromptTemplate(template=prompt_, input_variables=["context"])
     
-    llm = OpenAI(model_name="gpt-4", temperature=0.5, max_tokens=300)
+    llm = OpenAI(model_name="gpt-4", temperature=0, max_tokens=300)
     prompt = template.format(context=context)
     
     print("THE PROMPT IS: " + "\n" + str(prompt))
