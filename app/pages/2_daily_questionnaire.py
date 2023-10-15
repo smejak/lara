@@ -55,7 +55,11 @@ def eval_res(question, user_response):
             
             Examples of context violation:
             - could be if the user says they spoke to their mother today, but the mother is deceased.
-            - the user ate peanutbutter, but is allergic to peanuts!
+            - the user ate peanutbutter, but is allergic to peanuts!            
+            
+            Note:
+            - It is OK if user talks about people you do not have information about yet, as long as they provide relevant context (e.g. clarification of the person's role)
+            - If user talks about people you do not have information about yet, and does not provide additional context about them, then ask him to repeat with more information.
             
             Return "OK" or "REPEAT" depending on whether you think the provided answer corresponds to the question.
         
